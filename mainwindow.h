@@ -2,10 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsScene>
+#include "Paleta.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+class Paleta;
 
 class MainWindow : public QMainWindow
 {
@@ -15,7 +15,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+
 private:
-    Ui::MainWindow *ui;
+    QGraphicsScene *escena;
+    Paleta *paleta;
 };
+
 #endif // MAINWINDOW_H

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Barra.png</file>
+        <file>ArkanoidFondo.png</file>
+    </qresource>
+</RCC>

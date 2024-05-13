@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include "Paleta.h"
+#include "Pelota.h"
 
 class Paleta;
+class Pelota;
 
 class MainWindow : public QMainWindow
 {
@@ -21,6 +23,12 @@ protected:
 private:
     QGraphicsScene *escena;
     Paleta *paleta;
+    Pelota *pelota;
+
+
+public:
+    void moverPelota();
 };
+
 
 #endif // MAINWINDOW_H

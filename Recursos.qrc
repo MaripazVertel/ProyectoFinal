@@ -2,5 +2,10 @@
     <qresource prefix="/">
         <file>Barra.png</file>
         <file>ArkanoidFondo.png</file>
+	<file>Ladrillo.png</file>
+	<file>Pelota.png</file>
+        <file>RebotePelota.wav</file>
+        <file>ReboteLadrillo.wav</file>
+        <file>ReboteParedes.wav</file>
     </qresource>
 </RCC>

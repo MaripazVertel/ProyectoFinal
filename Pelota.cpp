@@ -1,39 +1,30 @@
-#include <iostream>
-#include <Pelota.h>
+#include "Pelota.h"
+#include <QTimer>
 
-using namespace std;
+Pelota::Pelota(qreal x, qreal y, const QPixmap &pixmap, QGraphicsItem *parent)
+    : QObject(), QGraphicsPixmapItem(pixmap.scaled(20,20), parent), m_velocidadX(3), m_velocidadY(-3) {
+    setPos(x, y); // Posición inicial de la pelota
 
-
-#include <QPainter>
-
-Pelota::Pelota(qreal startX, qreal startY, qreal startVelocityX, qreal startVelocityY, qreal startRadius, QGraphicsItem *parent)
-    : QGraphicsItem(parent), x(startX), y(startY), velocityX(startVelocityX), velocityY(startVelocityY), radius(startRadius)
-{}
-
-QRectF Pelota::boundingRect() const
-{
-    return QRectF(x - radius, y - radius, 2 * radius, 2 * radius);
+    // Creación de un temporizador para mover la pelota
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &Pelota::mover); // Conexión del temporizador al método de mover
+    timer->start(16); // Inicia el temporizador (aproximadamente 60 FPS)
 }
 
-void Pelota::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
-{
-    painter->drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
+void Pelota::mover() {
+    setPos(x() + m_velocidadX, y() + m_velocidadY); // Movimiento de la pelota según la velocidad en los ejes X e Y
 }
 
-void Pelota::move()
-{
-    x += velocityX;
-    y += velocityY;
-    setPos(x, y);
+void Pelota::setVelocidad(qreal velocidadX, qreal velocidadY) {
+    m_velocidadX = velocidadX;
+    m_velocidadY = velocidadY;
 }
 
-void Pelota::setVelocity(qreal newVelocityX, qreal newVelocityY)
-{
-    velocityX = newVelocityX;
-    velocityY = newVelocityY;
+qreal Pelota::velocidadX() const {
+    return m_velocidadX;
 }
 
-qreal Pelota::getRadius() const
-{
-    return radius;
+qreal Pelota::velocidadY() const {
+    return m_velocidadY;
 }
+

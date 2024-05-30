@@ -3,32 +3,43 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QLabel>
+#include <QSoundEffect>
+
 #include "Paleta.h"
 #include "Pelota.h"
+#include "Ladrillo.h"
 
-class Paleta;
-class Pelota;
-
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+
+private slots:
+    void moverPelota();
 
 private:
+    void actualizarPuntaje(int puntos);
+    void actualizarVidas(int vidas);
+    void verificarFinJuego();
+
     QGraphicsScene *escena;
     Paleta *paleta;
     Pelota *pelota;
-
-
-public:
-    void moverPelota();
+    Ladrillo *ladrillo;
+    QLabel *etiquetaPuntaje;
+    QLabel *etiquetaVidas;
+    QSoundEffect *rebotePelota;
+    QSoundEffect *reboteLadrillo;
+    QSoundEffect *reboteParedes;
+    int puntaje;
+    int vidas;
 };
-
 
 #endif // MAINWINDOW_H

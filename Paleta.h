@@ -2,20 +2,20 @@
 #define PALETA_H
 
 #include <QGraphicsPixmapItem>
-#include <QKeyEvent>
 #include <QGraphicsScene>
-class Paleta : public QGraphicsPixmapItem
-{
+#include <QKeyEvent>
+
+class Paleta : public QGraphicsPixmapItem {
 public:
-    Paleta(QGraphicsScene *scene, QGraphicsItem *parent = nullptr);
+    Paleta(QGraphicsScene *scene, QGraphicsItem *parent = nullptr); // Constructor
 
-    void setInitialPosition(qreal x, qreal y);
+    void setInitialPosition(qreal x, qreal y); // Método para establecer la posición inicial de la paleta
 
-    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override; // Método para manejar los eventos de teclado
 
 private:
-    qreal velocidad;
-    QGraphicsScene *escena;
+    qreal velocidad; // Velocidad de movimiento de la paleta
+    QGraphicsScene *escena; // Puntero a la escena donde se encuentra la paleta
 };
 
 #endif // PALETA_H

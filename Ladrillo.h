@@ -1,39 +1,16 @@
-//#ifndef LADRILLOS_H
-//#define LADRILLOS_H
+#ifndef LADRILLOS_H
+#define LADRILLOS_H
 
-//*#include <QWidget>
-/*#include <QPainter>
-#include <vector>
 
-// Clase para representar un ladrillo
-class ladrillo {
-public:
-    ladrillo(int x, int y, int ancho, int altura, int fuerza);
+#include <QObject>
+#include <QGraphicsPixmapItem>
 
-    int getfuerza() const;
-    void hit();
-
-    QRect rect;
-
-private:
-    int fuerza; // Fuerza del ladrillo
-};
-
-// Clase para representar la ventana del juego
-class ladrillos : public QWidget {
+class Ladrillo : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
 public:
-    ladrillos(QWidget *parent = nullptr);
-
-    void addladrillo(int x, int y, int ancho, int altura, int fuerza);
-
-protected:
-    void paintEvent(QPaintEvent *event) override;
-
-private:
-    std::vector<ladrillo> ladrillos1; // Vector de ladrillos
+    Ladrillo(qreal width, qreal height, qreal x, qreal y, const QPixmap &pixmap, QGraphicsItem *parent = nullptr);
+    virtual ~Ladrillo(); // Asegúrate de que el destructor sea virtual
 };
 
-#endif // LADRILLOS_H
+#endif // LADRILLO_H
 
-*/

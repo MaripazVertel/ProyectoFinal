@@ -1,28 +1,22 @@
 #ifndef PELOTA_H
 #define PELOTA_H
 
-#include <iostream>
-#include <QGraphicsItem>
+#include <QObject>
+#include <QGraphicsPixmapItem>
 
-class MainWindow;
-
-class Pelota : public QGraphicsItem
-{
-    friend class MainWindow;
+class Pelota : public QObject, public QGraphicsPixmapItem {
+    Q_OBJECT
 public:
-    Pelota(qreal startX, qreal startY, qreal startVelocityX, qreal startVelocityY, qreal startRadius, QGraphicsItem *parent = nullptr);
-    QRectF boundingRect() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
-    void move();
-    void setVelocity(qreal velocityX, qreal velocityY);
-    qreal getRadius() const;
-
+    Pelota(qreal x, qreal y, const QPixmap &pixmap, QGraphicsItem *parent = nullptr);
+    void setVelocidad(qreal velocidadX, qreal velocidadY); // Nueva función
+    qreal velocidadX() const;
+    qreal velocidadY() const;
+public slots:
+    void mover();
 private:
-    qreal x;
-    qreal y;
-    qreal velocityX;
-    qreal velocityY;
-    qreal radius;
+    qreal m_velocidadX;
+    qreal m_velocidadY;
 };
 
 #endif // PELOTA_H
+

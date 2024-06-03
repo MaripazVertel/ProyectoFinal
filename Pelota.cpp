@@ -11,9 +11,12 @@ Pelota::Pelota(qreal x, qreal y, const QPixmap &pixmap, QGraphicsItem *parent)
     timer->start(16); // Inicia el temporizador (aproximadamente 60 FPS)
 }
 
+
 void Pelota::mover() {
     setPos(x() + m_velocidadX, y() + m_velocidadY); // Movimiento de la pelota según la velocidad en los ejes X e Y
 }
+
+
 
 void Pelota::setVelocidad(qreal velocidadX, qreal velocidadY) {
     m_velocidadX = velocidadX;

@@ -29,6 +29,7 @@ private:
     void actualizarVidas(int vidas);
     void verificarFinJuego();
 
+
     QGraphicsScene *escena;
     Paleta *paleta;
     Pelota *pelota;

@@ -6,11 +6,16 @@ Paleta::Paleta(QGraphicsScene *scene, QGraphicsItem *parent)
     : QGraphicsPixmapItem(parent), velocidad(20), escena(scene) { // Constructor de la paleta
     QPixmap pixmap(":/Barra.1.png"); // Carga la imagen de la paleta
     setPixmap(pixmap.scaled(200, 200)); // Establece la imagen de la paleta y la escala
+
 }
+
 
 void Paleta::setInitialPosition(qreal x, qreal y) {
     setPos(x, y); // Establece la posición inicial de la paleta
 }
+
+
+
 
 
 

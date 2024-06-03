@@ -13,6 +13,8 @@
 #include <QKeyEvent>
 #include <QShowEvent>
 
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), puntaje(0), vidas(3) {
     // Inicializa la escena
@@ -40,8 +42,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Crea la paleta y establece su posición inicial
     paleta = new Paleta(escena);
-    paleta->setInitialPosition(escena->width() / 2 - paleta->pixmap().width() / 2, escena->height() - paleta->pixmap().height());
+    int margen_inferior = -85;
+    paleta->setInitialPosition(escena->width() / 2 - paleta->pixmap().width() / 2, escena->height() - paleta->pixmap().height() - margen_inferior);
     escena->addItem(paleta);
+
 
     // Crea la pelota y establece su posición inicial con la imagen
     QPixmap pelotaPixmap(":/Pelota.png");
@@ -78,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::moverPelota);
     timer->start(16); // Aproximadamente 60 fotogramas por segundo
+
 }
 
 MainWindow::~MainWindow() {
@@ -165,3 +170,4 @@ void MainWindow::verificarFinJuego() {
         }
     }
 }
+

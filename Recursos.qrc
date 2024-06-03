@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>Barra.png</file>
         <file>ArkanoidFondo.png</file>
         <file>Ladrillo.png</file>
         <file>Pelota.png</file>
@@ -8,6 +7,7 @@
         <file>ReboteLadrillo.wav</file>
         <file>ReboteParedes.wav</file>
         <file>Barra.1.png</file>
-        <file>fondo_base.jpg</file>
+        <file>Barra.png</file>
+        <file>Portada.jpg</file>
     </qresource>
 </RCC>

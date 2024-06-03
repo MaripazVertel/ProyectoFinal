@@ -12,7 +12,8 @@
 #include <QLabel>
 #include <QKeyEvent>
 #include <QShowEvent>
-
+#include <QVBoxLayout>
+#include <QPushButton>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -207,18 +208,77 @@ void MainWindow::actualizarVidas(int vidas) {
     etiquetaVidas->setText(QString("Vidas: %1").arg(this->vidas));
 }
 
+
 void MainWindow::verificarFinJuego() {
     if (escena->items().size() == 2) { // Solo la pelota y la paleta
-        QMessageBox::information(this, "¡Felicidades!", "¡Has ganado el juego!");
-        QApplication::quit(); // Cierra la aplicación
+        // Crear un QMessageBox personalizado para "¡Has ganado!"
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("¡Felicidades!");
+
+        // Crear un widget contenedor
+        QWidget* widget = new QWidget(&msgBox);
+        QVBoxLayout* layout = new QVBoxLayout(widget);
+
+        // Crear y agregar la etiqueta con la imagen de victoria
+        QLabel* etiquetaImagen = new QLabel();
+        QPixmap imagen(":/Ganado.jpg"); // Cambia esto a la ruta correcta de tu imagen de victoria
+        etiquetaImagen->setPixmap(imagen);
+        layout->addWidget(etiquetaImagen);
+
+        // Ajustar el layout del widget y agregarlo al QMessageBox
+        widget->setLayout(layout);
+        msgBox.layout()->addWidget(widget);
+
+        // Agregar botones
+        QAbstractButton* okButton = msgBox.addButton(QMessageBox::Ok);
+        QAbstractButton* replayButton = msgBox.addButton("Volver a jugar", QMessageBox::ActionRole);
+
+        // Mostrar el mensaje y esperar a que el usuario lo cierre
+        msgBox.exec();
+
+        // Manejar la respuesta del usuario
+        if (msgBox.clickedButton() == replayButton) {
+            reiniciarJuego();
+        } else {
+            QApplication::quit(); // Cierra la aplicación
+        }
     }
 
     if (pelota->y() > escena->height()) {
         vidas--;
         etiquetaVidas->setText(QString("Vidas: %1").arg(vidas));
         if (vidas == 0) {
-            QMessageBox::information(this, "Fin del juego", "¡Has perdido!");
-            QApplication::quit(); // Cierra la aplicación
+            // Crear un QMessageBox personalizado para "¡Has perdido!"
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Fin del juego");
+
+            // Crear un widget contenedor
+            QWidget* widget = new QWidget(&msgBox);
+            QVBoxLayout* layout = new QVBoxLayout(widget);
+
+            // Crear y agregar la etiqueta con la imagen de derrota
+            QLabel* etiquetaImagen = new QLabel();
+            QPixmap imagen(":/Perdida.jpg"); // Cambia esto a la ruta correcta de tu imagen de derrota
+            etiquetaImagen->setPixmap(imagen);
+            layout->addWidget(etiquetaImagen);
+
+            // Ajustar el layout del widget y agregarlo al QMessageBox
+            widget->setLayout(layout);
+            msgBox.layout()->addWidget(widget);
+
+            // Agregar botones
+            QAbstractButton* okButton = msgBox.addButton(QMessageBox::Ok);
+            QAbstractButton* replayButton = msgBox.addButton("Volver a jugar", QMessageBox::ActionRole);
+
+            // Mostrar el mensaje y esperar a que el usuario lo cierre
+            msgBox.exec();
+
+            // Manejar la respuesta del usuario
+            if (msgBox.clickedButton() == replayButton) {
+                reiniciarJuego();
+            } else {
+                QApplication::quit(); // Cierra la aplicación
+            }
         } else {
             // Reposicionar la pelota y la paleta
             pelota->setPos(escena->width() / 2, escena->height() / 2);
@@ -227,3 +287,13 @@ void MainWindow::verificarFinJuego() {
     }
 }
 
+void MainWindow::reiniciarJuego() {
+    // Reiniciar las vidas
+    vidas = 3;
+    etiquetaVidas->setText(QString("Vidas: %1").arg(vidas));
+
+    // Reposicionar la pelota y la paleta
+    pelota->setPos(escena->width() / 2, escena->height() / 2);
+    pelota->setVelocidad(2, -2); // Resetear la velocidad de la pelota
+
+}

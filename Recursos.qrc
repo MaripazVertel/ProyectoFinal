@@ -15,5 +15,7 @@
         <file>LadrilloGris.png</file>
         <file>LadrilloVerde.png</file>
         <file>LadrilloNaranja.png</file>
+        <file>Perdida.jpg</file>
+        <file>Ganada.jpg</file>
     </qresource>
 </RCC>

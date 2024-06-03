@@ -28,6 +28,7 @@ private:
     void actualizarPuntaje(int puntos);
     void actualizarVidas(int vidas);
     void verificarFinJuego();
+    void reiniciarJuego();
 
 
     QGraphicsScene *escena;

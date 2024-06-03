@@ -10,5 +10,10 @@
         <file>Barra.png</file>
         <file>Portada.jpg</file>
         <file>fondo_base.jpg</file>
+        <file>LadrilloAmarillo.png</file>
+        <file>LadrilloRojo.png</file>
+        <file>LadrilloGris.png</file>
+        <file>LadrilloVerde.png</file>
+        <file>LadrilloNaranja.png</file>
     </qresource>
 </RCC>

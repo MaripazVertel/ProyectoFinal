@@ -221,7 +221,7 @@ void MainWindow::verificarFinJuego() {
 
         // Crear y agregar la etiqueta con la imagen de victoria
         QLabel* etiquetaImagen = new QLabel();
-        QPixmap imagen(":/Ganado.jpg"); // Cambia esto a la ruta correcta de tu imagen de victoria
+        QPixmap imagen(":/Ganado.jpg");
         etiquetaImagen->setPixmap(imagen);
         layout->addWidget(etiquetaImagen);
 
@@ -258,7 +258,7 @@ void MainWindow::verificarFinJuego() {
 
             // Crear y agregar la etiqueta con la imagen de derrota
             QLabel* etiquetaImagen = new QLabel();
-            QPixmap imagen(":/Perdida.jpg"); // Cambia esto a la ruta correcta de tu imagen de derrota
+            QPixmap imagen(":/Perdida.jpg");
             etiquetaImagen->setPixmap(imagen);
             layout->addWidget(etiquetaImagen);
 

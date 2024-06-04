@@ -15,7 +15,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), puntaje(0), vidas(3) {
     // Inicializa la escena
@@ -44,9 +43,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Crea la paleta y establece su posición inicial
     paleta = new Paleta(escena);
     int margen_inferior = -85;
+    //int margen_inferior = -85;
     paleta->setInitialPosition(escena->width() / 2 - paleta->pixmap().width() / 2, escena->height() - paleta->pixmap().height() - margen_inferior);
     escena->addItem(paleta);
-
 
     // Crea la pelota y establece su posición inicial con la imagen
     QPixmap pelotaPixmap(":/Pelota.png");
@@ -54,56 +53,10 @@ MainWindow::MainWindow(QWidget *parent)
     escena->addItem(pelota);
 
     // Configura la velocidad inicial de la pelota hacia los ladrillos
-    pelota->setVelocidad(3, -3);
+    pelota->setVelocidad(2, -2);
 
-
-    // Crea los ladrillos y los agrega a la escena
-    for (int i = 0; i < 5; ++i) { // Crear 5 filas de ladrillos
-        for (int j = 0; j < 10; ++j) { // 10 columnas
-            qreal x = j * 100 + 100; // Espaciado horizontal de 100px
-            qreal y = i * 30 + 200;  // Espaciado vertical de 30px
-
-            QPixmap pixmap;
-            int golpes = 1; // Por defecto, un golpe para destruir el ladrillo
-
-            // Identifica los ladrillos que requieren dos golpes para destruirse
-            if (i % 2 == 0) { // Si estamos en una fila par
-                        if (j % 2 == 0) { // Si estamos en una columna par
-                            golpes = 3; // Tres golpes para destruir el ladrillo
-                        }
-                    } else { // Si estamos en una fila impar
-                        if (j % 2 != 0) { // Si estamos en una columna impar
-                            golpes = 2; // Dos golpes para destruir el ladrillo
-                        }
-                    }
-
-            switch (i) {
-                case 0:
-                    pixmap = QPixmap(":/LadrilloRojo.png");
-                    break;
-                case 1:
-                    pixmap = QPixmap(":/LadrilloNaranja.png");
-                    break;
-                case 2:
-                    pixmap = QPixmap(":/LadrilloVerde.png");
-                    break;
-                case 3:
-                    pixmap = QPixmap(":/LadrilloAmarillo.png");
-                    break;
-                case 4:
-                    pixmap = QPixmap(":/LadrilloGris.png");
-                    break;
-                default:
-                    pixmap = QPixmap(":/Ladrillo.png");
-                    break;
-            }
-
-            // Crear el ladrillo con el pixmap seleccionado
-            Ladrillo *ladrillo = new Ladrillo(100, 20, x, y, pixmap, golpes);
-            escena->addItem(ladrillo);
-        }
-    }
-
+    // Crear los ladrillos
+    crearLadrillos();
 
     // Carga los efectos de sonido
     rebotePelota = new QSoundEffect(this);
@@ -122,7 +75,6 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::moverPelota);
     timer->start(16); // Aproximadamente 60 fotogramas por segundo
-
 }
 
 MainWindow::~MainWindow() {
@@ -173,11 +125,6 @@ void MainWindow::moverPelota() {
     }
 
     // Eliminar los ladrillos después de verificar las colisiones
-    /*for (auto it = itemsAEliminar.begin(); it != itemsAEliminar.end(); ++it) {
-        escena->removeItem(*it);
-        delete *it;*/
-
-    // Eliminar los ladrillos después de verificar las colisiones
     for (auto it = itemsAEliminar.begin(); it != itemsAEliminar.end(); ++it) {
         Ladrillo *ladrillo = dynamic_cast<Ladrillo*>(*it);
         if (ladrillo) {
@@ -191,8 +138,6 @@ void MainWindow::moverPelota() {
                 delete *it;
             }
         }
-
-
     }
 
     verificarFinJuego();
@@ -207,7 +152,6 @@ void MainWindow::actualizarVidas(int vidas) {
     this->vidas += vidas;
     etiquetaVidas->setText(QString("Vidas: %1").arg(this->vidas));
 }
-
 
 void MainWindow::verificarFinJuego() {
     if (escena->items().size() == 2) { // Solo la pelota y la paleta
@@ -230,7 +174,7 @@ void MainWindow::verificarFinJuego() {
         msgBox.layout()->addWidget(widget);
 
         // Agregar botones
-        QAbstractButton* okButton = msgBox.addButton(QMessageBox::Ok);
+        msgBox.addButton(QMessageBox::Ok);
         QAbstractButton* replayButton = msgBox.addButton("Volver a jugar", QMessageBox::ActionRole);
 
         // Mostrar el mensaje y esperar a que el usuario lo cierre
@@ -267,7 +211,7 @@ void MainWindow::verificarFinJuego() {
             msgBox.layout()->addWidget(widget);
 
             // Agregar botones
-            QAbstractButton* okButton = msgBox.addButton(QMessageBox::Ok);
+            msgBox.addButton(QMessageBox::Ok);
             QAbstractButton* replayButton = msgBox.addButton("Volver a jugar", QMessageBox::ActionRole);
 
             // Mostrar el mensaje y esperar a que el usuario lo cierre
@@ -288,12 +232,82 @@ void MainWindow::verificarFinJuego() {
 }
 
 void MainWindow::reiniciarJuego() {
-    // Reiniciar las vidas
+    // Reiniciar el puntaje y las vidas
+    puntaje = 0;
     vidas = 3;
-    etiquetaVidas->setText(QString("Vidas: %1").arg(vidas));
+    etiquetaPuntaje->setText("Puntaje: 0");
+    etiquetaVidas->setText("Vidas: 3");
 
-    // Reposicionar la pelota y la paleta
+    // Eliminar todos los ladrillos de la escena
+    QList<QGraphicsItem*> items = escena->items();
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        Ladrillo* ladrillo = dynamic_cast<Ladrillo*>(*it);
+        if (ladrillo) {
+            escena->removeItem(ladrillo);
+            delete ladrillo;
+        }
+    }
+
+    // Reiniciar la posición de la paleta y la pelota
+
+    int margen_inferior = -85;
+    paleta->setPos(escena->width() / 2 - paleta->pixmap().width() / 2, escena->height() - paleta->pixmap().height() - margen_inferior);
     pelota->setPos(escena->width() / 2, escena->height() / 2);
-    pelota->setVelocidad(2, -2); // Resetear la velocidad de la pelota
+    pelota->setVelocidad(3, -3);
 
+
+
+
+
+    // Recrear los ladrillos
+    crearLadrillos();
+}
+
+void MainWindow::crearLadrillos() {
+    // Crea los ladrillos y los agrega a la escena
+    for (int i = 0; i < 5; ++i) { // Crear 5 filas de ladrillos
+        for (int j = 0; j < 10; ++j) { // 10 columnas
+            qreal x = j * 100 + 100; // Espaciado horizontal de 100px
+            qreal y = i * 30 + 200;  // Espaciado vertical de 30px
+
+            QPixmap pixmap;
+            int golpes = 1; // Por defecto, un golpe para destruir el ladrillo
+
+            // Identifica los ladrillos que requieren dos golpes para destruirse
+            if (i % 2 == 0) { // Si estamos en una fila par
+                if (j % 2 == 0) { // Si estamos en una columna par
+                    golpes = 3; // Tres golpes para destruir el ladrillo
+                }
+            } else { // Si estamos en una fila impar
+                if (j % 2 != 0) { // Si estamos en una columna impar
+                    golpes = 2; // Dos golpes para destruir el ladrillo
+                }
+            }
+
+            switch (i) {
+                case 0:
+                    pixmap = QPixmap(":/LadrilloRojo.png");
+                    break;
+                case 1:
+                    pixmap = QPixmap(":/LadrilloNaranja.png");
+                    break;
+                case 2:
+                    pixmap = QPixmap(":/LadrilloVerde.png");
+                    break;
+                case 3:
+                    pixmap = QPixmap(":/LadrilloAmarillo.png");
+                    break;
+                case 4:
+                    pixmap = QPixmap(":/LadrilloGris.png");
+                    break;
+                default:
+                    pixmap = QPixmap(":/Ladrillo.png");
+                    break;
+            }
+
+            // Crear el ladrillo con el pixmap seleccionado
+            Ladrillo *ladrillo = new Ladrillo(100, 20, x, y, pixmap, golpes);
+            escena->addItem(ladrillo);
+        }
+    }
 }

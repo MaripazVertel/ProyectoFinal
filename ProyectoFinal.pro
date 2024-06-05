@@ -16,6 +16,7 @@ SOURCES += \
     Ladrillo.cpp \
     Paleta.cpp \
     Pelota.cpp \
+    iniciojuegowidget.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -23,6 +24,7 @@ HEADERS += \
     Ladrillo.h \
     Paleta.h \
     Pelota.h \
+    iniciojuegowidget.h \
     mainwindow.h
 
 FORMS += \

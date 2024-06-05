@@ -5,8 +5,8 @@
 #include <QGraphicsScene>
 #include <QLabel>
 #include <QSoundEffect>
+#include "iniciojuegowidget.h"
 
-// Declaraciones de las clases utilizadas
 class Paleta;
 class Pelota;
 class Ladrillo;
@@ -22,15 +22,17 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void showEvent(QShowEvent *event) override;
 
+private slots:
+    void mostrarPantallaPrincipal();
+
 private:
     void moverPelota();
     void verificarFinJuego();
     void reiniciarJuego();
-    void crearLadrillos();  // Asegúrate de declarar esta función
+    void crearLadrillos();
     void actualizarPuntaje(int puntos);
     void actualizarVidas(int vidas);
-
-    // Otros miembros y funciones...
+    bool juegoIniciado;
 
     QGraphicsScene *escena;
     Paleta *paleta;
@@ -42,6 +44,10 @@ private:
     QSoundEffect *reboteParedes;
     int puntaje;
     int vidas;
+
+    InicioJuegoWidget *inicioWidget;
+
+    QTimer *timer;  // Agregar el temporizador como miembro de la clase
 };
 
 #endif // MAINWINDOW_H

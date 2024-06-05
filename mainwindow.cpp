@@ -2,6 +2,7 @@
 #include "Paleta.h"
 #include "Pelota.h"
 #include "Ladrillo.h"
+#include "iniciojuegowidget.h"  // Incluir el widget de inicio de juego
 #include <QGraphicsView>
 #include <QPixmap>
 #include <QMessageBox>
@@ -17,48 +18,52 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), puntaje(0), vidas(3) {
-    // Inicializa la escena
+
+    // Crear y configurar la pantalla de inicio
+    inicioWidget = new InicioJuegoWidget(this);
+    setCentralWidget(inicioWidget);
+    connect(inicioWidget, &InicioJuegoWidget::iniciarJuego, this, &MainWindow::mostrarPantallaPrincipal);
+
+    // Inicializar la escena
     escena = new QGraphicsScene();
     escena->setSceneRect(0, 0, 1200, 650);
 
-    // Carga el fondo de la escena
+    // Cargar el fondo de la escena
     QPixmap fondo(":/ArkanoidFondo.png");
     escena->setBackgroundBrush(fondo.scaled(escena->sceneRect().size().toSize(), Qt::IgnoreAspectRatio));
 
-    // Crea la vista
+    // Crear la vista
     QGraphicsView *vista = new QGraphicsView(this);
     vista->setScene(escena);
-    setCentralWidget(vista);
 
     // Crear una barra de estado personalizada
     QStatusBar *miBarraEstado = new QStatusBar(this);
     setStatusBar(miBarraEstado);
 
-    // Agrega las etiquetas para mostrar el puntaje y las vidas
+    // Agregar etiquetas para mostrar el puntaje y las vidas
     etiquetaPuntaje = new QLabel("Puntaje: 0", this);
     etiquetaVidas = new QLabel("Vidas: 3", this);
     miBarraEstado->addWidget(etiquetaPuntaje);
     miBarraEstado->addWidget(etiquetaVidas);
 
-    // Crea la paleta y establece su posición inicial
+    // Crear la paleta y establecer su posición inicial
     paleta = new Paleta(escena);
     int margen_inferior = -85;
-    //int margen_inferior = -85;
     paleta->setInitialPosition(escena->width() / 2 - paleta->pixmap().width() / 2, escena->height() - paleta->pixmap().height() - margen_inferior);
     escena->addItem(paleta);
 
-    // Crea la pelota y establece su posición inicial con la imagen
+    // Crear la pelota y establecer su posición inicial con la imagen
     QPixmap pelotaPixmap(":/Pelota.png");
     pelota = new Pelota(escena->width() / 2, escena->height() / 2, pelotaPixmap);
     escena->addItem(pelota);
 
-    // Configura la velocidad inicial de la pelota hacia los ladrillos
+    // Configurar la velocidad inicial de la pelota hacia los ladrillos
     pelota->setVelocidad(2, -2);
 
     // Crear los ladrillos
     crearLadrillos();
 
-    // Carga los efectos de sonido
+    // Cargar los efectos de sonido
     rebotePelota = new QSoundEffect(this);
     rebotePelota->setSource(QUrl("qrc:/RebotePelota.wav"));
     rebotePelota->setVolume(0.5);
@@ -71,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
     reboteParedes->setSource(QUrl("qrc:/ReboteParedes.wav"));
     reboteParedes->setVolume(0.5);
 
-    // Configura un temporizador para mover la pelota
+    // Configurar un temporizador para mover la pelota
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::moverPelota);
     timer->start(16); // Aproximadamente 60 fotogramas por segundo
@@ -87,6 +92,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
 void MainWindow::showEvent(QShowEvent *event) {
     QMainWindow::showEvent(event);
+}
+
+void MainWindow::mostrarPantallaPrincipal() {
+    // Configurar la ventana principal del juego
+    QGraphicsView *vista = new QGraphicsView(this);
+    vista->setScene(escena);
+    setCentralWidget(vista);
 }
 
 void MainWindow::moverPelota() {
@@ -254,10 +266,6 @@ void MainWindow::reiniciarJuego() {
     paleta->setPos(escena->width() / 2 - paleta->pixmap().width() / 2, escena->height() - paleta->pixmap().height() - margen_inferior);
     pelota->setPos(escena->width() / 2, escena->height() / 2);
     pelota->setVelocidad(3, -3);
-
-
-
-
 
     // Recrear los ladrillos
     crearLadrillos();

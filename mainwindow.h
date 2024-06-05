@@ -34,6 +34,7 @@ private:
     void actualizarVidas(int vidas);
     bool juegoIniciado;
 
+
     QGraphicsScene *escena;
     Paleta *paleta;
     Pelota *pelota;
@@ -47,7 +48,7 @@ private:
 
     InicioJuegoWidget *inicioWidget;
 
-    QTimer *timer;  // Agregar el temporizador como miembro de la clase
+    QTimer *timer;
 };
 
 #endif // MAINWINDOW_H

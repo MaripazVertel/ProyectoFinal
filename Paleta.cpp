@@ -15,10 +15,6 @@ void Paleta::setInitialPosition(qreal x, qreal y) {
 }
 
 
-
-
-
-
 void Paleta::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_A) { // Si se presiona la tecla A
         qreal nuevaPosicion = x() - velocidad; // Calcula la nueva posición hacia la izquierda

@@ -19,29 +19,3 @@ public:
 
 
 
-
-/*
-#ifndef LADRILLO_H
-#define LADRILLO_H
-
-#include <QGraphicsRectItem>
-#include <QPixmap>
-
-class Ladrillo : public QGraphicsRectItem {
-public:
-    Ladrillo(int width, int height, int x, int y, const QPixmap &pixmap, int golpesRestantes, QGraphicsItem *parent = nullptr);
-
-    int getGolpesRestantes() const;
-    void setGolpesRestantes(int golpes);
-
-private:
-    int golpesRestantes;
-};
-
-#endif // LADRILLO_H
-
-*/
-
-
-
-

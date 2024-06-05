@@ -2,7 +2,7 @@
 #include "Paleta.h"
 #include "Pelota.h"
 #include "Ladrillo.h"
-#include "iniciojuegowidget.h"  // Incluir el widget de inicio de juego
+#include "iniciojuegowidget.h"
 #include <QGraphicsView>
 #include <QPixmap>
 #include <QMessageBox>
@@ -23,7 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     inicioWidget = new InicioJuegoWidget(this);
     setCentralWidget(inicioWidget);
     connect(inicioWidget, &InicioJuegoWidget::iniciarJuego, this, &MainWindow::mostrarPantallaPrincipal);
+}
 
+
+void MainWindow::mostrarPantallaPrincipal() {
     // Inicializar la escena
     escena = new QGraphicsScene();
     escena->setSceneRect(0, 0, 1200, 650);
@@ -35,6 +38,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Crear la vista
     QGraphicsView *vista = new QGraphicsView(this);
     vista->setScene(escena);
+
+    setCentralWidget(vista);
+
 
     // Crear una barra de estado personalizada
     QStatusBar *miBarraEstado = new QStatusBar(this);
@@ -82,6 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
     timer->start(16); // Aproximadamente 60 fotogramas por segundo
 }
 
+
 MainWindow::~MainWindow() {
     delete escena;
 }
@@ -92,13 +99,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
 void MainWindow::showEvent(QShowEvent *event) {
     QMainWindow::showEvent(event);
-}
-
-void MainWindow::mostrarPantallaPrincipal() {
-    // Configurar la ventana principal del juego
-    QGraphicsView *vista = new QGraphicsView(this);
-    vista->setScene(escena);
-    setCentralWidget(vista);
 }
 
 void MainWindow::moverPelota() {

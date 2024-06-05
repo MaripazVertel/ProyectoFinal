@@ -17,7 +17,6 @@ void Pelota::mover() {
 }
 
 
-
 void Pelota::setVelocidad(qreal velocidadX, qreal velocidadY) {
     m_velocidadX = velocidadX;
     m_velocidadY = velocidadY;
